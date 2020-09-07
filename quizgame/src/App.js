@@ -1,8 +1,12 @@
-import React from 'react';
+import React, {useState} from 'react';
+import FlashCardList from "./FlashCard/FlashCardList";
 
 function App() {
+
+  const [flashCards, setFlashCards] = useState(SampleFlashCards);
+
   return (
-    <h1>hiho there</h1>
+    <FlashCardList flashcards={flashCards}/>
   );
 }
 
@@ -39,7 +43,7 @@ const SampleFlashCards = [
             "4",
             "5"
         ]
-    }
+    },
 ]
 
 export default App;
