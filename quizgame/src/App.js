@@ -1,10 +1,12 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import FlashCardList from "./FlashCardList";
 import "./App.css";
 
 function App() {
 
     const [flashCards, setFlashCards] = useState(SampleFlashCards);
+
+    const categoryEl = useRef();
 
     useEffect(() => {
         fetch("https://opentdb.com/api.php?amount=10")
@@ -31,10 +33,23 @@ function App() {
         return textArea.value;
     }
 
+    function handleSubmit(event) {
+        event.preventDefault();
+    }
+
     return (
-        <div className="container">
-            <FlashCardList flashcards={flashCards}/>
-        </div>
+        <>
+            <form className="header" onSubmit={handleSubmit}>
+                <div className="form-group">
+                    <label htmlForm="category">Category</label>
+                    <select id="category" ref={categoryEl}></select>
+                </div>
+            </form>
+            <div className="container">
+                <FlashCardList flashcards={flashCards}/>
+            </div>
+
+        </>
     );
 }
 
