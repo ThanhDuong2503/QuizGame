@@ -1,10 +1,25 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import FlashCardList from "./FlashCardList";
 import "./App.css";
 
 function App() {
 
   const [flashCards, setFlashCards] = useState(SampleFlashCards);
+
+  useEffect(() => {
+      fetch ("https://opentdb.com/api.php?amount=10")
+          .then(response => response.json())
+          .then(data => setFlashCards(data.results.map((questionItem, index) => {
+              const answer = questionItem.correct_answer;
+              const options = [...questionItem.incorrect_answers, answer]
+              return {
+                  id: `${index}-${Date.now()}`,
+                  question: questionItem.question,
+                  answer: answer,
+                  options: options.sort(() => Math.random() - 0.5)
+              }
+          })))
+  }, [])
 
   return (
     <FlashCardList flashcards={flashCards}/>
