@@ -4,40 +4,50 @@ import "./App.css";
 
 function App() {
 
-  const [flashCards, setFlashCards] = useState(SampleFlashCards);
+    const [flashCards, setFlashCards] = useState(SampleFlashCards);
 
-  useEffect(() => {
-      fetch ("https://opentdb.com/api.php?amount=10")
-          .then(response => response.json())
-          .then(data => setFlashCards(data.results.map((questionItem, index) => {
-              const answer = questionItem.correct_answer;
-              const options = [...questionItem.incorrect_answers, answer]
-              return {
-                  id: `${index}-${Date.now()}`,
-                  question: questionItem.question,
-                  answer: answer,
-                  options: options.sort(() => Math.random() - 0.5)
-              }
-          })))
-  }, [])
+    useEffect(() => {
+        fetch("https://opentdb.com/api.php?amount=10")
+            .then(response => response.json())
+            .then(data => setFlashCards(data.results.map((questionItem, index) => {
+                const answer = decodeString(questionItem.correct_answer);
+                const options = [
+                    ...questionItem.incorrect_answers.map(incorrectAnswers => decodeString(incorrectAnswers)),
+                    answer
+                ]
+                return {
+                    id: `${index}-${Date.now()}`,
+                    question: decodeString(questionItem.question),
+                    answer: answer,
+                    options: options.sort(() => Math.random() - 0.5)
+                }
+            })))
+    }, [])
 
-  return (
-    <FlashCardList flashcards={flashCards}/>
-  );
+    // decode signs in Questions and Answers for better readability
+    function decodeString(string) {
+        const textArea = document.createElement("textarea");
+        textArea.innerHTML = string;
+        return textArea.value;
+    }
+
+    return (
+        <FlashCardList flashcards={flashCards}/>
+    );
 }
 
 const SampleFlashCards = [
-  {
-    id: 1,
-    question: "2+2?",
-    answer: "4",
-    options: [
-        "2",
-        "3",
-        "4",
-        "5"
-    ]
-  },
+    {
+        id: 1,
+        question: "2+2?",
+        answer: "4",
+        options: [
+            "2",
+            "3",
+            "4",
+            "5"
+        ]
+    },
     {
         id: 2,
         question: "3+3?",
