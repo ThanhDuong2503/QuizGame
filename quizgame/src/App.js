@@ -8,6 +8,7 @@ function App() {
     const [categories, setCategories] = useState([]);
 
     const categoryEl = useRef();
+    const amountEl = useRef();
 
     // select a category
     useEffect(() => {
@@ -59,12 +60,15 @@ function App() {
                 </div>
                 <div className="form-group">
                     <label htmlFor="amount">Number of Questions</label>
+                    <input type="number" id="amount" min="1" step="1" defaultValue={10} ref={amountEl}/>
+                </div>
+                <div className="form-group">
+                <button className="button">Generate</button>
                 </div>
             </form>
             <div className="container">
                 <FlashCardList flashcards={flashCards}/>
             </div>
-
         </>
     );
 }
