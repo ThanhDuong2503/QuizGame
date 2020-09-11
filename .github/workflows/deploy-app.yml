@@ -19,6 +19,7 @@ jobs:
           cd quizgame
           npm install
           npm run build
+          cd ..
       - name: upload frontend build artifacts
         uses: actions/upload-artifact@v2
         with:
